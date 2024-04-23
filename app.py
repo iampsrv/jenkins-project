@@ -21,8 +21,7 @@ def index():
         elif 'delete_task' in request.form:
             task_id_to_delete = int(request.form.get('task_id_to_delete'))
             tasks.pop(task_id_to_delete, None)
-
-        
+       
     return render_template('index.html', tasks=tasks)
 
 if __name__ == '__main__':
