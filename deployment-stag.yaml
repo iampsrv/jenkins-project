@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   labels:
     app: flask-app
-  name: flaskapp-deploy
+  name: flask-app-deployment-stage
   namespace: staging
 spec:
   replicas: 1
