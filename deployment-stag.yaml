@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: flask-app
+  name: flaskapp-deploy
+  namespace: staging
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flask-app
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: flask-app
+    spec:
+      containers:
+      - image: psrv3/kodekloud_jenkins_flask_app
+        name: flask-app
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 5000
+          protocol: TCP
