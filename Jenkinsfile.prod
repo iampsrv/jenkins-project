@@ -1,0 +1,40 @@
+pipeline {
+    agent any
+    environment {
+        KUBECONFIG = credentials('kubeconfig-credentials-id')
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/iampsrv/jenkins-project/'
+                sh "ls -ltr"
+            }
+        }
+
+        stage('Approval Required') {
+            steps {
+                script {
+                    def userInput=input(id:'userInput',message: 'Approve and provide docker image', parameters: [
+                        string(name: 'PARAMETER_NAME', defaultValue: 'defaultValue', description: 'Enter the docker image tag')
+                    ])
+                    env.PARAMETER_VALUE = userInput
+                    }
+            }
+        }
+    
+        stage('Deploy to EKS Production env') 
+        {
+            steps {
+                script {
+                    def deploymentExists = sh(script: "kubectl get deployment flask-app-deployment-prod -n prod -o json", returnStatus: true)
+                    if (deploymentExists == 0) {
+                        sh "kubectl set image -n prod deployment/flask-app-deployment-prod flask-app=${env.PARAMETER_VALUE} --record"
+                        echo "Kubernetes deployment updated successfully"} 
+                    else {
+                        sh "kubectl apply -f deployment-prod.yaml"
+                        echo "Kubernetes deployment created successfully"}
+                    }
+                }
+        }
+    }
+}
