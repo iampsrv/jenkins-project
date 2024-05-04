@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        IMAGE_NAME = ''
+        IMAGE_NAME = 'psrv3/kodekloud_jenkins'
         IMAGE_TAG = "${IMAGE_NAME}:${env.BUILD_NUMBER}"
     }
     stages {
@@ -30,13 +30,13 @@ pipeline {
         }
         stage('Build Docker Image') {
             steps {
-                sh "docker build -t flaskapp"
+                sh "docker build -t ${IMAGE_NAME}"
                 echo "Docker image build successfully"
             }
         }
         stage('Push Docker Image') {
             steps {
-                sh "docker push flaskapp"
+                sh "docker push ${IMAGE_NAME}"
                 echo "Docker image push successfully"
             }
         }
