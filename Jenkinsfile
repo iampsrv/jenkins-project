@@ -43,7 +43,7 @@ pipeline {
         }
         stage('Deploy to EKS cluster') {
             steps {
-                sh 'kubectl apply -f deployment.yaml'
+                sh 'kubectl apply -f deployment-stag.yaml'
                 echo "Deploy successfully"
             }
         }
