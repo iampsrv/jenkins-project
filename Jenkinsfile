@@ -30,13 +30,13 @@ pipeline {
         }
         stage('Build Docker Image') {
             steps {
-                sh "docker build -t ${IMAGE_NAME} ."
+                sh "docker build -t ${IMAGE_TAG} ."
                 echo "Docker image build successfully"
             }
         }
         stage('Push Docker Image') {
             steps {
-                sh "docker push ${IMAGE_NAME}"
+                sh "docker push ${IMAGE_TAG}"
                 echo "Docker image push successfully"
             }
         }
