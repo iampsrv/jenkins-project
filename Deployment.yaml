@@ -22,6 +22,7 @@ spec:
     spec:
       containers:
       - image: psrv3/kodekloud_jenkins_flask_app
+        name: flask-app
         imagePullPolicy: Always
         ports:
         - containerPort: 5000

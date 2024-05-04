@@ -3,6 +3,7 @@ pipeline {
     environment {
         IMAGE_NAME = 'psrv3/kodekloud_jenkins_flask_app'
         IMAGE_TAG = "${IMAGE_NAME}:${env.BUILD_NUMBER}"
+        KUBECONFIG = credentials('kubeconfig-credentials-id')
     }
     stages {
         stage('Checkout') {
@@ -38,6 +39,12 @@ pipeline {
             steps {
                 sh "docker push ${IMAGE_TAG}"
                 echo "Docker image push successfully"
+            }
+        }
+        stage('Deploy to EKS cluster') {
+            steps {
+                sh 'kubectl apply -f deployment.yaml'
+                echo "Deploy successfully"
             }
         }
     }
